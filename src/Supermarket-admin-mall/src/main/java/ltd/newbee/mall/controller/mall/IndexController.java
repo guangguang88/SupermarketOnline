@@ -2,9 +2,11 @@ package ltd.newbee.mall.controller.mall;
 
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.IndexConfigTypeEnum;
+import ltd.newbee.mall.common.NewBeeMallCategoryLevelEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexCarouselVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexCategoryVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexConfigGoodsVO;
+import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.service.NewBeeMallCarouselService;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallIndexConfigService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -47,6 +50,15 @@ public class IndexController {
         request.setAttribute("newGoodses", newGoodses);//新品
         request.setAttribute("recommendGoodses", recommendGoodses);//推荐商品
         return "mall/index";
+    }
+
+    @GetMapping({"/indexGetCategories"})
+    @ResponseBody
+    public List<GoodsCategory> indexGetCategories(HttpServletRequest request) {
+
+        List<GoodsCategory> categories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(0L), NewBeeMallCategoryLevelEnum.LEVEL_ONE.getLevel());
+
+        return categories;
     }
 
     @GetMapping({"/indexGetCarousels"})
