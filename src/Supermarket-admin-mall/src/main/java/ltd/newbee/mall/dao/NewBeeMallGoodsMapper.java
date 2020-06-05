@@ -6,6 +6,7 @@ import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface NewBeeMallGoodsMapper {
     int deleteByPrimaryKey(Long goodsId);
@@ -37,5 +38,7 @@ public interface NewBeeMallGoodsMapper {
     int updateStockNum(@Param("stockNumDTOS") List<StockNumDTO> stockNumDTOS);
 
     int batchUpdateSellStatus(@Param("orderIds")Long[] orderIds,@Param("sellStatus") int sellStatus);
+
+    List<NewBeeMallGoods> searchGoodsBySecCategoryOrKeyword(Map<String, Object> params);
 
 }

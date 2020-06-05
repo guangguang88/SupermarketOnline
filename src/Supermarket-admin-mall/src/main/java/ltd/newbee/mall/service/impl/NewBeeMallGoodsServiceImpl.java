@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
@@ -91,5 +92,11 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
         }
         PageResult pageResult = new PageResult(newBeeMallSearchGoodsVOS, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResult;
+    }
+
+    @Override
+    public List<NewBeeMallGoods> searchGoodsBySecCategoryOrKeyword(Map<String, Object> params) {
+        List<NewBeeMallGoods> goodsList = goodsMapper.searchGoodsBySecCategoryOrKeyword(params);
+        return goodsList;
     }
 }

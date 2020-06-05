@@ -28,7 +28,8 @@ public interface NewBeeMallCarouselService {
      * 返回固定数量的轮播图对象(首页调用)
      *
      * @param number
+     * @param type
      * @return
      */
-    List<NewBeeMallIndexCarouselVO> getCarouselsForIndex(int number);
+    List<NewBeeMallIndexCarouselVO> getCarouselsForIndex(int number, String type);
 }

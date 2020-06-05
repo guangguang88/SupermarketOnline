@@ -15,9 +15,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -58,6 +60,15 @@ public class GoodsController {
         PageQueryUtil pageUtil = new PageQueryUtil(params);
         request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
         return "mall/search";
+    }
+
+    @GetMapping({"/searchGoodsByCategoryOrKeyword"})
+    @ResponseBody
+    public List<NewBeeMallGoods> searchGoodsBySecCategoryOrKeyword(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+
+        //封装商品数据
+        List<NewBeeMallGoods>  results = newBeeMallGoodsService.searchGoodsBySecCategoryOrKeyword(params);
+        return results;
     }
 
     @GetMapping("/goods/detail/{goodsId}")

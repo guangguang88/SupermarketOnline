@@ -7,6 +7,8 @@ import java.util.Date;
 public class NewBeeMallGoods {
     private Long goodsId;
 
+    private Long sellCount;
+
     private String goodsName;
 
     private String goodsIntro;
@@ -190,5 +192,14 @@ public class NewBeeMallGoods {
         sb.append(", goodsDetailContent=").append(goodsDetailContent);
         sb.append("]");
         return sb.toString();
+    }
+
+
+    public Long getSellCount() {
+        return sellCount;
+    }
+
+    public void setSellCount(Long sellCount) {
+        this.sellCount = sellCount;
     }
 }

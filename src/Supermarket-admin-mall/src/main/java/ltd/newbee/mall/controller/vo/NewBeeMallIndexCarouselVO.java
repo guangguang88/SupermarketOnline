@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class NewBeeMallIndexCarouselVO implements Serializable {
 
+    private Integer carouselId;
+
     private String carouselUrl;
 
     private String redirectUrl;
@@ -25,5 +27,13 @@ public class NewBeeMallIndexCarouselVO implements Serializable {
 
     public void setRedirectUrl(String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public Integer getCarouselId() {
+        return carouselId;
+    }
+
+    public void setCarouselId(Integer carouselId) {
+        this.carouselId = carouselId;
     }
 }

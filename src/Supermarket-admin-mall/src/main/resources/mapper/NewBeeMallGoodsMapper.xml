@@ -21,6 +21,9 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="ltd.newbee.mall.entity.NewBeeMallGoods">
         <result column="goods_detail_content" jdbcType="LONGVARCHAR" property="goodsDetailContent"/>
     </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithSellCount" type="ltd.newbee.mall.entity.NewBeeMallGoods">
+        <result column="sell_count" jdbcType="BIGINT" property="sellCount"/>
+    </resultMap>
     <sql id="Base_Column_List">
     goods_id, goods_name, goods_intro,goods_category_id, goods_cover_img, goods_carousel, original_price,
     selling_price, stock_num, tag, goods_sell_status, create_user, create_time, update_user, 
@@ -116,6 +119,36 @@
         <if test="start!=null and limit!=null">
             limit #{start},#{limit}
         </if>
+    </select>
+
+    <select id="searchGoodsBySecCategoryOrKeyword" parameterType="Map" resultMap="ResultMapWithSellCount">
+        select
+        info.goods_id
+        ,info.goods_name
+        ,info.goods_cover_img
+        ,info.goods_intro
+        ,info.selling_price
+        ,info.original_price
+        ,info.stock_num
+        ,info.tag
+        ,info.goods_sell_status
+        ,SUM(orderTbl.goods_count) sell_count
+        from tb_newbee_mall_goods_info info
+        left join tb_newbee_mall_order_item orderTbl
+        on orderTbl.goods_id = info.goods_id
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (info.goods_name like CONCAT('%',#{keyword},'%') or info.goods_intro like CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="goodsCategoryId!=null and goodsCategoryId!=''">
+                and info.goods_category_id = #{goodsCategoryId}
+            </if>
+        </where>
+        group by info.goods_id
+        <if test="orderBy!=null and orderBy!=''">
+            order by #{orderBy}
+        </if>
+
     </select>
 
     <select id="getTotalNewBeeMallGoodsBySearch" parameterType="Map" resultType="int">

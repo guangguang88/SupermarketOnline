@@ -7,6 +7,7 @@ import java.util.Date;
 public class Carousel {
     private Integer carouselId;
 
+    private String carouselType;
     private String carouselUrl;
 
     private String redirectUrl;
@@ -104,6 +105,7 @@ public class Carousel {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", carouselId=").append(carouselId);
+        sb.append(", carouselType=").append(carouselType);
         sb.append(", carouselUrl=").append(carouselUrl);
         sb.append(", redirectUrl=").append(redirectUrl);
         sb.append(", carouselRank=").append(carouselRank);
@@ -114,5 +116,13 @@ public class Carousel {
         sb.append(", updateUser=").append(updateUser);
         sb.append("]");
         return sb.toString();
+    }
+
+    public String getCarouselType() {
+        return carouselType;
+    }
+
+    public void setCarouselType(String carouselType) {
+        this.carouselType = carouselType;
     }
 }

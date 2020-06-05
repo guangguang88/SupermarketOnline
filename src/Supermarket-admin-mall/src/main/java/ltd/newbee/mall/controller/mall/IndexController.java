@@ -12,15 +12,14 @@ import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallIndexConfigService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class IndexController {
@@ -40,7 +39,7 @@ public class IndexController {
         if (CollectionUtils.isEmpty(categories)) {
             return "error/error_5xx";
         }
-        List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(Constants.INDEX_CAROUSEL_NUMBER);
+        List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(Constants.INDEX_CAROUSEL_NUMBER, Constants.INDEX_CAROUSEL_TYPE_UNFIXED);
         List<NewBeeMallIndexConfigGoodsVO> hotGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_HOT.getType(), Constants.INDEX_GOODS_HOT_NUMBER);
         List<NewBeeMallIndexConfigGoodsVO> newGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_NEW.getType(), Constants.INDEX_GOODS_NEW_NUMBER);
         List<NewBeeMallIndexConfigGoodsVO> recommendGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_RECOMMOND.getType(), Constants.INDEX_GOODS_RECOMMOND_NUMBER);
@@ -52,11 +51,28 @@ public class IndexController {
         return "mall/index";
     }
 
-    @GetMapping({"/indexGetCategories"})
+    @GetMapping({"/indexGetFirstCategories"})
     @ResponseBody
-    public List<GoodsCategory> indexGetCategories(HttpServletRequest request) {
+    public List<GoodsCategory> indexGetFirstCategories(HttpServletRequest request) {
 
         List<GoodsCategory> categories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(0L), NewBeeMallCategoryLevelEnum.LEVEL_ONE.getLevel());
+
+        return categories;
+    }
+
+    @GetMapping({"/indexGetSecondCategories"})
+    @ResponseBody
+    public List<GoodsCategory> indexGetSecondCategories(@RequestParam Map<String, Object> params, HttpServletRequest request) {
+
+        Long parentCategoryId = 0L;
+        if (params.containsKey("parentCategoryId") && !StringUtils.isEmpty(params.get("parentCategoryId") + "")) {
+            parentCategoryId = Long.valueOf(params.get("parentCategoryId") + "");
+        }else {
+            List<GoodsCategory> categories = newBeeMallCategoryService.selectByLevelAndParentIdsLimitOne(Collections.singletonList(0L), NewBeeMallCategoryLevelEnum.LEVEL_ONE.getLevel());
+            parentCategoryId = categories.get(0).getCategoryId();
+        }
+
+        List<GoodsCategory> categories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(parentCategoryId), NewBeeMallCategoryLevelEnum.LEVEL_TWO.getLevel());
 
         return categories;
     }
@@ -65,7 +81,16 @@ public class IndexController {
     @ResponseBody
     public List<NewBeeMallIndexCarouselVO> indexGetCarousels(HttpServletRequest request) {
 
-        List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(Constants.INDEX_CAROUSEL_NUMBER);
+        List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(Constants.INDEX_CAROUSEL_NUMBER, Constants.INDEX_CAROUSEL_TYPE_UNFIXED);
+
+        return carousels;
+    }
+
+    @GetMapping({"/indexGetFixedImages"})
+    @ResponseBody
+    public List<NewBeeMallIndexCarouselVO> indexGetFixedImages(HttpServletRequest request) {
+
+        List<NewBeeMallIndexCarouselVO> carousels = newBeeMallCarouselService.getCarouselsForIndex(Constants.INDEX_CAROUSEL_NUMBER, Constants.INDEX_CAROUSEL_TYPE_FIXED);
 
         return carousels;
     }

@@ -3,6 +3,7 @@
 <mapper namespace="ltd.newbee.mall.dao.CarouselMapper">
     <resultMap id="BaseResultMap" type="ltd.newbee.mall.entity.Carousel">
         <id column="carousel_id" jdbcType="INTEGER" property="carouselId"/>
+        <result column="carousel_type" jdbcType="VARCHAR" property="carouselType"/>
         <result column="carousel_url" jdbcType="VARCHAR" property="carouselUrl"/>
         <result column="redirect_url" jdbcType="VARCHAR" property="redirectUrl"/>
         <result column="carousel_rank" jdbcType="INTEGER" property="carouselRank"/>
@@ -36,11 +37,12 @@
         from tb_newbee_mall_carousel
         where carousel_id = #{carouselId,jdbcType=INTEGER}
     </select>
-    <select id="findCarouselsByNum" parameterType="int" resultMap="BaseResultMap">
+    <select id="findCarouselsByNum" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_carousel
         where is_deleted = 0
+        and carousel_type = #{carouselType,jdbcType=VARCHAR}
         order by carousel_rank desc
         limit #{number}
     </select>
@@ -48,12 +50,13 @@
     delete from tb_newbee_mall_carousel
     where carousel_id = #{carouselId,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="ltd.newbee.mall.entity.Carousel">
-    insert into tb_newbee_mall_carousel (carousel_id, carousel_url, redirect_url, 
+    <insert id
+                    ="insert" parameterType="ltd.newbee.mall.entity.Carousel">
+    insert into tb_newbee_mall_carousel (carousel_id, carousel_type, carousel_url, redirect_url,
       carousel_rank, is_deleted, create_time, 
       create_user, update_time, update_user
       )
-    values (#{carouselId,jdbcType=INTEGER}, #{carouselUrl,jdbcType=VARCHAR}, #{redirectUrl,jdbcType=VARCHAR}, 
+    values (#{carouselId,jdbcType=INTEGER}, #{carouselType,jdbcType=VARCHAR}, #{carouselUrl,jdbcType=VARCHAR}, #{redirectUrl,jdbcType=VARCHAR},
       #{carouselRank,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=INTEGER}
       )
@@ -63,6 +66,9 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="carouselId != null">
                 carousel_id,
+            </if>
+            <if test="carouselType != null">
+                carousel_type,
             </if>
             <if test="carouselUrl != null">
                 carousel_url,
@@ -93,6 +99,9 @@
             <if test="carouselId != null">
                 #{carouselId,jdbcType=INTEGER},
             </if>
+            <if test="carouselType != null">
+                #{carouselType,jdbcType=VARCHAR},
+            </if>
             <if test="carouselUrl != null">
                 #{carouselUrl,jdbcType=VARCHAR},
             </if>
@@ -122,6 +131,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="ltd.newbee.mall.entity.Carousel">
         update tb_newbee_mall_carousel
         <set>
+            <if test="carouselType != null">
+                carousel_url = #{carouselType,jdbcType=VARCHAR},
+            </if>
             <if test="carouselUrl != null">
                 carousel_url = #{carouselUrl,jdbcType=VARCHAR},
             </if>
@@ -151,7 +163,8 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="ltd.newbee.mall.entity.Carousel">
     update tb_newbee_mall_carousel
-    set carousel_url = #{carouselUrl,jdbcType=VARCHAR},
+    set carousel_type = #{carouselType,jdbcType=VARCHAR},
+        carousel_url = #{carouselUrl,jdbcType=VARCHAR},
       redirect_url = #{redirectUrl,jdbcType=VARCHAR},
       carousel_rank = #{carouselRank,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=TINYINT},

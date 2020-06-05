@@ -12,6 +12,8 @@ public class Constants {
     public final static String FILE_UPLOAD_DIC = "C:\\Users\\zhangmiao\\Desktop\\新建文件夹\\小程序\\chaoshi\\newbee-mall-master\\src\\main\\resources\\upload\\";//上传文件的默认url前缀，根据部署设置自行修改
 
     public final static int INDEX_CAROUSEL_NUMBER = 5;//首页轮播图数量(可根据自身需求修改)
+    public final static String INDEX_CAROUSEL_TYPE_UNFIXED = "0";
+    public final static String INDEX_CAROUSEL_TYPE_FIXED = "1";
 
     public final static int INDEX_CATEGORY_NUMBER = 10;//首页一级分类的最大数量
 

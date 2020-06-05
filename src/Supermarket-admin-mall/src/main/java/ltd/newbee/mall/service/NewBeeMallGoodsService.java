@@ -5,6 +5,7 @@ import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
 import java.util.List;
+import java.util.Map;
 
 public interface NewBeeMallGoodsService {
     /**
@@ -62,4 +63,12 @@ public interface NewBeeMallGoodsService {
      * @return
      */
     PageResult searchNewBeeMallGoods(PageQueryUtil pageUtil);
+
+    /**
+     * 商品搜索（小程序用）
+     *
+     * @param params
+     * @return
+     */
+    List<NewBeeMallGoods> searchGoodsBySecCategoryOrKeyword(Map<String, Object> params);
 }

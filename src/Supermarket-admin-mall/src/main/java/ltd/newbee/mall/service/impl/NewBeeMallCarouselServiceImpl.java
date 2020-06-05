@@ -69,9 +69,9 @@ public class NewBeeMallCarouselServiceImpl implements NewBeeMallCarouselService 
     }
 
     @Override
-    public List<NewBeeMallIndexCarouselVO> getCarouselsForIndex(int number) {
+    public List<NewBeeMallIndexCarouselVO> getCarouselsForIndex(int number, String type) {
         List<NewBeeMallIndexCarouselVO> newBeeMallIndexCarouselVOS = new ArrayList<>(number);
-        List<Carousel> carousels = carouselMapper.findCarouselsByNum(number);
+        List<Carousel> carousels = carouselMapper.findCarouselsByNum(number, type);
         if (!CollectionUtils.isEmpty(carousels)) {
             newBeeMallIndexCarouselVOS = BeanUtil.copyList(carousels, NewBeeMallIndexCarouselVO.class);
         }
